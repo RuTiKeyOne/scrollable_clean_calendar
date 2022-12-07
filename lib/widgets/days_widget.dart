@@ -273,7 +273,7 @@ class DaysWidget extends StatelessWidget {
             Theme.of(context).colorScheme.primary.withOpacity(.3);
         txtStyle =
             (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
-          color: selectedBackgroundColorBetween,
+          color: textColorBetween,
         );
       }
     } else if (values.day.isSameDay(values.minDate)) {
