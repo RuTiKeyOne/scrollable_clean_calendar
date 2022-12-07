@@ -289,9 +289,8 @@ class DaysWidget extends StatelessWidget {
         color: dayDisableColor ??
             Theme.of(context).colorScheme.onSurface.withOpacity(.5),
         decoration: TextDecoration.lineThrough,
-        fontWeight: values.isFirstDayOfWeek || values.isLastDayOfWeek
-            ? FontWeight.bold
-            : null,
+        fontWeight:
+            values.isFirstDayOfWeek || values.isLastDayOfWeek ? null : null,
       );
     }
 

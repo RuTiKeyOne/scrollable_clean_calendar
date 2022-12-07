@@ -183,7 +183,7 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
             locale: widget.locale,
             layout: widget.layout,
             monthBuilder: widget.monthBuilder,
-            textAlign: widget.monthTextAlign,
+            textAlign: widget.monthTextAlign, 
             textStyle: widget.monthTextStyle,
           ),
         ),
