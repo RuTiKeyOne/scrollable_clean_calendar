@@ -21,6 +21,7 @@ class DaysWidget extends StatelessWidget {
   final Color? dayDisableColor;
   final double radius;
   final TextStyle? textStyle;
+  final Color? textColorBetween;
 
   const DaysWidget({
     Key? key,
@@ -37,6 +38,7 @@ class DaysWidget extends StatelessWidget {
     required this.dayDisableColor,
     required this.radius,
     required this.textStyle,
+    this.textColorBetween = Colors.white,
   }) : super(key: key);
 
   @override
@@ -271,8 +273,7 @@ class DaysWidget extends StatelessWidget {
             Theme.of(context).colorScheme.primary.withOpacity(.3);
         txtStyle =
             (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
-          color:
-              selectedBackgroundColor ?? Theme.of(context).colorScheme.primary,
+          color: selectedBackgroundColorBetween,
         );
       }
     } else if (values.day.isSameDay(values.minDate)) {

@@ -83,6 +83,8 @@ class ScrollableCleanCalendar extends StatefulWidget {
   // The dividerColor
   final Color? dividerColor;
 
+  final Color? textBetweenColor;
+
   const ScrollableCleanCalendar({
     this.locale = 'en',
     this.scrollController,
@@ -108,6 +110,7 @@ class ScrollableCleanCalendar extends StatefulWidget {
     this.dayRadius = 6,
     this.dividerColor = Colors.grey,
     required this.calendarController,
+    this.textBetweenColor,
   }) : assert(layout != null ||
             (monthBuilder != null &&
                 weekdayBuilder != null &&
@@ -183,7 +186,7 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
             locale: widget.locale,
             layout: widget.layout,
             monthBuilder: widget.monthBuilder,
-            textAlign: widget.monthTextAlign, 
+            textAlign: widget.monthTextAlign,
             textStyle: widget.monthTextStyle,
           ),
         ),
@@ -217,6 +220,7 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
                   dayDisableColor: widget.dayDisableColor,
                   radius: widget.dayRadius,
                   textStyle: widget.dayTextStyle,
+                  textColorBetween: widget.textBetweenColor,
                 );
               },
             )
