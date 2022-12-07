@@ -249,7 +249,6 @@ class DaysWidget extends StatelessWidget {
                   ? Colors.black
                   : Colors.white
               : Theme.of(context).colorScheme.onPrimary,
-          fontWeight: FontWeight.bold,
         );
 
         if (values.selectedMinDate == values.selectedMaxDate) {
@@ -274,9 +273,6 @@ class DaysWidget extends StatelessWidget {
             (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
           color:
               selectedBackgroundColor ?? Theme.of(context).colorScheme.primary,
-          fontWeight: values.isFirstDayOfWeek || values.isLastDayOfWeek
-              ? FontWeight.bold
-              : null,
         );
       }
     } else if (values.day.isSameDay(values.minDate)) {
