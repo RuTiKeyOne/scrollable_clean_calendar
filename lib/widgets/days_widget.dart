@@ -127,55 +127,53 @@ class DaysWidget extends StatelessWidget {
                 if (cleanCalendarController.onAfterMaxDateTapped != null) {
                   cleanCalendarController.onAfterMaxDateTapped!(day);
                 }
+              } else if (cleanCalendarController.rangeMinDate != null &&
+                  availableDaysOfWeek != null &&
+                  availableDaysOfWeek!.isNotEmpty &&
+                  cleanCalendarController.rangeMode) {
+                late int daysToGenerate = 1;
+                late final List<DateTime> dateRange;
+
+                if (day.compareTo(cleanCalendarController.rangeMinDate!) > 0) {
+                  daysToGenerate += day
+                      .difference(cleanCalendarController.rangeMinDate!)
+                      .inDays;
+                  dateRange = List.generate(
+                      daysToGenerate,
+                      (i) => cleanCalendarController.rangeMinDate!
+                          .add(Duration(days: i)));
+                } else if (day
+                        .compareTo(cleanCalendarController.rangeMinDate!) <
+                    0) {
+                  daysToGenerate += cleanCalendarController.rangeMinDate!
+                      .difference(day)
+                      .inDays;
+                  dateRange = List.generate(
+                      daysToGenerate, (i) => day.add(Duration(days: i)));
+                } else if (day
+                            .compareTo(cleanCalendarController.rangeMinDate!) ==
+                        0 &&
+                    cleanCalendarController.rangeMaxDate != null) {
+                  dateRange = [day];
+                } else if (day
+                            .compareTo(cleanCalendarController.rangeMinDate!) ==
+                        0 &&
+                    cleanCalendarController.rangeMaxDate == null) {
+                  cleanCalendarController.onDayClick(day);
+                  return;
+                }
+
+                final isContainsDaysFromRange = dateRange
+                    .every((e) => e.isContainsDayOfWeek(availableDaysOfWeek!));
+
+                if (isContainsDaysFromRange) {
+                  cleanCalendarController.onDayClick(day);
+                }
               } else {
-                if (cleanCalendarController.rangeMinDate != null &&
-                    availableDaysOfWeek != null &&
-                    availableDaysOfWeek!.isNotEmpty) {
-                  late int daysToGenerate = 1;
-                  late final List<DateTime> dateRange;
-
-                  if (day.compareTo(cleanCalendarController.rangeMinDate!) >
-                      0) {
-                    daysToGenerate += day
-                        .difference(cleanCalendarController.rangeMinDate!)
-                        .inDays;
-                    dateRange = List.generate(
-                        daysToGenerate,
-                        (i) => cleanCalendarController.rangeMinDate!
-                            .add(Duration(days: i)));
-                  } else if (day
-                          .compareTo(cleanCalendarController.rangeMinDate!) <
-                      0) {
-                    daysToGenerate += cleanCalendarController.rangeMinDate!
-                        .difference(day)
-                        .inDays;
-                    dateRange = List.generate(
-                        daysToGenerate, (i) => day.add(Duration(days: i)));
-                  } else if (day.compareTo(
-                              cleanCalendarController.rangeMinDate!) ==
-                          0 &&
-                      cleanCalendarController.rangeMaxDate != null) {
-                    dateRange = [day];
-                  } else if (day.compareTo(
-                              cleanCalendarController.rangeMinDate!) ==
-                          0 &&
-                      cleanCalendarController.rangeMaxDate == null) {
-                    cleanCalendarController.onDayClick(day);
-                    return;
-                  }
-
-                  final isContainsDaysFromRange = dateRange.every(
-                      (e) => e.isContainsDayOfWeek(availableDaysOfWeek!));
-
-                  if (isContainsDaysFromRange) {
-                    cleanCalendarController.onDayClick(day);
-                  }
-                } else {
-                  final isContainsDays =
-                      day.isContainsDayOfWeek(availableDaysOfWeek!);
-                  if (isContainsDays) {
-                    cleanCalendarController.onDayClick(day);
-                  }
+                final isContainsDays =
+                    day.isContainsDayOfWeek(availableDaysOfWeek!);
+                if (isContainsDays) {
+                  cleanCalendarController.onDayClick(day);
                 }
               }
             }
