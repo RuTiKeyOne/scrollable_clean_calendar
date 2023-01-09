@@ -85,6 +85,8 @@ class ScrollableCleanCalendar extends StatefulWidget {
 
   final Color? textBetweenColor;
 
+  final List<String>? availableDaysOfWeek;
+
   const ScrollableCleanCalendar({
     this.locale = 'en',
     this.scrollController,
@@ -111,6 +113,7 @@ class ScrollableCleanCalendar extends StatefulWidget {
     this.dividerColor = Colors.grey,
     required this.calendarController,
     this.textBetweenColor,
+    this.availableDaysOfWeek,
   }) : assert(layout != null ||
             (monthBuilder != null &&
                 weekdayBuilder != null &&
@@ -154,7 +157,7 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
       itemBuilder: (context, index) {
         final month = widget.calendarController.months[index];
 
-        return childCollumn(month);
+        return childColumn(month);
       },
     );
   }
@@ -170,12 +173,12 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
       itemBuilder: (context, index) {
         final month = widget.calendarController.months[index];
 
-        return childCollumn(month);
+        return childColumn(month);
       },
     );
   }
 
-  Widget childCollumn(DateTime month) {
+  Widget childColumn(DateTime month) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -221,6 +224,7 @@ class _ScrollableCleanCalendarState extends State<ScrollableCleanCalendar> {
                   radius: widget.dayRadius,
                   textStyle: widget.dayTextStyle,
                   textColorBetween: widget.textBetweenColor,
+                  availableDaysOfWeek: widget.availableDaysOfWeek,
                 );
               },
             )

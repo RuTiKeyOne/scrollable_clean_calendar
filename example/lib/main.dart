@@ -9,7 +9,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final calendarController = CleanCalendarController(
-    minDate: DateTime.now(),
+    minDate: DateTime.now().add(const Duration(days: 1)),
     maxDate: DateTime.now().add(const Duration(days: 365)),
     onRangeSelected: (firstDate, secondDate) {},
     onDayTapped: (date) {},
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
     onPreviousMinDateTapped: (date) {},
     onAfterMaxDateTapped: (date) {},
     weekdayStart: DateTime.monday,
+
     // initialFocusDate: DateTime(2023, 5),
     // initialDateSelected: DateTime(2022, 3, 15),
     // endDateSelected: DateTime(2022, 3, 20),
@@ -60,6 +61,15 @@ class MyApp extends StatelessWidget {
           calendarController: calendarController,
           layout: Layout.BEAUTY,
           calendarCrossAxisSpacing: 0,
+          availableDaysOfWeek: [
+            "MONDAY",
+            "TUESDAY",
+            "WEDNESDAY",
+            "THURSDAY",
+            "FRIDAY",
+            "SATURDAY",
+            "SUNDAY"
+          ],
         ),
       ),
     );

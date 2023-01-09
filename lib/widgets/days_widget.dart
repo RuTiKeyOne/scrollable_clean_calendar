@@ -22,6 +22,7 @@ class DaysWidget extends StatelessWidget {
   final double radius;
   final TextStyle? textStyle;
   final Color? textColorBetween;
+  final List<String>? availableDaysOfWeek;
 
   const DaysWidget({
     Key? key,
@@ -38,6 +39,7 @@ class DaysWidget extends StatelessWidget {
     required this.dayDisableColor,
     required this.radius,
     required this.textStyle,
+    this.availableDaysOfWeek,
     this.textColorBetween = Colors.white,
   }) : super(key: key);
 
@@ -115,18 +117,66 @@ class DaysWidget extends StatelessWidget {
 
         return GestureDetector(
           onTap: () {
-            if (day.isBefore(cleanCalendarController.minDate) &&
-                !day.isSameDay(cleanCalendarController.minDate)) {
-              if (cleanCalendarController.onPreviousMinDateTapped != null) {
-                cleanCalendarController.onPreviousMinDateTapped!(day);
-              }
-            } else if (day.isAfter(cleanCalendarController.maxDate)) {
-              if (cleanCalendarController.onAfterMaxDateTapped != null) {
-                cleanCalendarController.onAfterMaxDateTapped!(day);
-              }
-            } else {
-              if (!cleanCalendarController.readOnly) {
-                cleanCalendarController.onDayClick(day);
+            if (availableDaysOfWeek != null) {
+              if (day.isBefore(cleanCalendarController.minDate) &&
+                  !day.isSameDay(cleanCalendarController.minDate)) {
+                if (cleanCalendarController.onPreviousMinDateTapped != null) {
+                  cleanCalendarController.onPreviousMinDateTapped!(day);
+                }
+              } else if (day.isAfter(cleanCalendarController.maxDate)) {
+                if (cleanCalendarController.onAfterMaxDateTapped != null) {
+                  cleanCalendarController.onAfterMaxDateTapped!(day);
+                }
+              } else {
+                if (cleanCalendarController.rangeMinDate != null &&
+                    availableDaysOfWeek != null &&
+                    availableDaysOfWeek!.isNotEmpty) {
+                  late int daysToGenerate = 1;
+                  late final List<DateTime> dateRange;
+
+                  if (day.compareTo(cleanCalendarController.rangeMinDate!) >
+                      0) {
+                    daysToGenerate += day
+                        .difference(cleanCalendarController.rangeMinDate!)
+                        .inDays;
+                    dateRange = List.generate(
+                        daysToGenerate,
+                        (i) => cleanCalendarController.rangeMinDate!
+                            .add(Duration(days: i)));
+                  } else if (day
+                          .compareTo(cleanCalendarController.rangeMinDate!) <
+                      0) {
+                    daysToGenerate += cleanCalendarController.rangeMinDate!
+                        .difference(day)
+                        .inDays;
+                    dateRange = List.generate(
+                        daysToGenerate, (i) => day.add(Duration(days: i)));
+                  } else if (day.compareTo(
+                              cleanCalendarController.rangeMinDate!) ==
+                          0 &&
+                      cleanCalendarController.rangeMaxDate != null) {
+                    dateRange = [day];
+                  } else if (day.compareTo(
+                              cleanCalendarController.rangeMinDate!) ==
+                          0 &&
+                      cleanCalendarController.rangeMaxDate == null) {
+                    cleanCalendarController.onDayClick(day);
+                    return;
+                  }
+
+                  final isContainsDaysFromRange = dateRange.every(
+                      (e) => e.isContainsDayOfWeek(availableDaysOfWeek!));
+
+                  if (isContainsDaysFromRange) {
+                    cleanCalendarController.onDayClick(day);
+                  }
+                } else {
+                  final isContainsDays =
+                      day.isContainsDayOfWeek(availableDaysOfWeek!);
+                  if (isContainsDays) {
+                    cleanCalendarController.onDayClick(day);
+                  }
+                }
               }
             }
           },
@@ -146,6 +196,14 @@ class DaysWidget extends StatelessWidget {
               : Colors.white
           : Theme.of(context).colorScheme.onSurface,
     );
+
+    if (availableDaysOfWeek != null &&
+        !values.day.isContainsDayOfWeek(availableDaysOfWeek!)) {
+      txtStyle = (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
+        color: dayDisableColor ??
+            Theme.of(context).colorScheme.onSurface.withOpacity(.5),
+      );
+    }
 
     if (values.isSelected) {
       if ((values.selectedMinDate != null &&
@@ -224,6 +282,14 @@ class DaysWidget extends StatelessWidget {
               : Colors.white
           : Theme.of(context).colorScheme.onSurface,
     );
+
+    if (availableDaysOfWeek != null &&
+        !values.day.isContainsDayOfWeek(availableDaysOfWeek!)) {
+      txtStyle = (textStyle ?? Theme.of(context).textTheme.bodyText1)!.copyWith(
+        color: dayDisableColor ??
+            Theme.of(context).colorScheme.onSurface.withOpacity(.5),
+      );
+    }
 
     if (values.isSelected) {
       if (values.isFirstDayOfWeek) {

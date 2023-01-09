@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension StringExtension on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${substring(1)}";
@@ -33,4 +35,10 @@ extension DateUtilsExtensions on DateTime {
       year == other.year && month == other.month && day == other.day;
 
   DateTime removeTime() => DateTime(year, month, day);
+
+  bool isContainsDayOfWeek(List<String> daysOfWeek) {
+    final dayOfWeek = DateFormat('EEEE').format(this).toUpperCase();
+    final containsResult = daysOfWeek.contains(dayOfWeek);
+    return containsResult;
+  }
 }
